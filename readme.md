@@ -1,59 +1,22 @@
-﻿const St = imports.gi.St;
-const Main = imports.ui.main;
-const GLib = imports.gi.GLib;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
-const Mainloop = imports.mainloop;
+﻿
+# Power Rate Indicator
 
-let label;
-let refreshRate = 3000; // Refresh rate in milliseconds (3 second)
-let refreshTimerId = 0;
+This GNOME Shell extension displays the current power rate of your system's battery in the top panel. It updates the power rate every 3 seconds and provides a convenient way to monitor your device's power consumption.
 
-function updatePowerRate() {
-    try {
-        // Execute a shell command to get the power rate
-        let [success, stdout] = GLib.spawn_command_line_sync("cat /sys/class/power_supply/BAT0/power_now");
-        if (success) {
-            let powerRate = parseFloat(stdout) / 1e6; // Convert µW to W
-            label.text = `Power Rate: ${powerRate.toFixed(2)} W`;
-        } else {
-            logError("Failed to execute the command.");
-            label.text = "Power Rate: N/A";
-        }
-    } catch (e) {
-        logError(e);
-        label.text = "Power Rate: N/A";
-    }
+## Installation
 
-    // Schedule the next update after the specified refresh rate
-    refreshTimerId = Mainloop.timeout_add(refreshRate, updatePowerRate);
-}
+1.  Clone or download this repository to your local machine.
+2.  Copy the `power-rate-indicator@yourusername` folder to `~/.local/share/gnome-shell/extensions/` directory. You may need to create the `extensions` directory if it doesn't exist.
+3.  Restart GNOME Shell by pressing `Alt + F2`, entering `r`, and pressing `Enter`, or by logging out and logging back in.
 
+## Usage
 
-function init() {
-    // Create a label with the initial text and apply styles
-    label = new St.Label({
-        text: "Power Rate: N/A",
-        style_class: "power-rate-label", // Apply a CSS class
-        style: "font-size: 14px; color: #eeeeec; text-align: center; line-height: 1.2em; vertical-align: middle;", // Apply styles directly
-    });
-}
+Once the extension is installed and activated, you will see the "Power Rate Indicator" in the top panel. It will display the current power rate in watts (W). If it fails to retrieve the power rate, it will display "Power Rate: N/A."
 
-function enable() {
-    // Create a PanelMenu.Button with the label as its child
-    let button = new PanelMenu.Button(null, "Power Rate Indicator");
-    button.actor.add_child(label);
+## Customization
+
+You can customize the refresh rate and appearance of the indicator by modifying the extension's code. Here are the key parameters you can adjust:
+
+-   `refreshRate`: You can change the refresh rate (in milliseconds) by modifying the `refreshRate` variable in the code. The default is 3000 milliseconds (3 seconds).
     
-    // Add the button to the top panel
-    Main.panel.addToStatusArea("power-rate-indicator", button);
-    
-    // Start updating the power rate immediately
-    updatePowerRate();
-}
-
-function disable() {
-    // Remove the button from the top panel and stop the update loop
-    Mainloop.source_remove(refreshTimerId);
-    Main.panel.statusArea['power-rate-indicator'].destroy();
-}
-
+-   Styling: You can customize the appearance of the indicator by modifying the `style` property of the `St.Label` in the `init()` function. You can change the font size, color, alignment, and other CSS styles to match your preferences.
