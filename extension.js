@@ -35,9 +35,13 @@ function init() {
     label = new St.Label({
         text: "Power Rate: N/A",
         style_class: "power-rate-label", // Apply a CSS class
-        style: "font-size: 14px; color: #eeeeec; text-align: center; line-height: 1.2em; vertical-align: middle;", // Apply styles directly
+        y_expand: true, y_align: 2,
+    
     });
+
+    //label.set_y_align(Clutter.ActorAlign.CENTER);
 }
+
 
 function enable() {
     // Create a PanelMenu.Button with the label as its child
