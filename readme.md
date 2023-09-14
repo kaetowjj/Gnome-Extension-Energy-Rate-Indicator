@@ -6,7 +6,7 @@ This GNOME Shell extension displays the current power rate of your system's batt
 ## Installation
 
 1.  Clone or download this repository to your local machine.
-2.  Copy the `power-rate-indicator@yourusername` folder to `~/.local/share/gnome-shell/extensions/` directory. You may need to create the `extensions` directory if it doesn't exist.
+2.  Copy the `energy-rate-indicator@kaetowjj.gmail.com` folder to `~/.local/share/gnome-shell/extensions/` directory. You may need to create the `extensions` directory if it doesn't exist.
 3.  Restart GNOME Shell by pressing `Alt + F2`, entering `r`, and pressing `Enter`, or by logging out and logging back in.
 
 ## Usage
