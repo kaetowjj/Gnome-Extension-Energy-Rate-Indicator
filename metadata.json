@@ -2,8 +2,7 @@
     "name": "Energy Rate Indicator",
     "description": "Displays the current energy rate in the top bar.",
     "uuid": "energy-rate-indicator@kaetowjj.gmail.com",
-    "shell-version": ["44.3"],
-    "version": 1,
-    "settings-schema": "org.gnome.shell.extensions.energy-rate-indicator",
-    "stylesheet": "stylesheet.css"
+    "shell-version": ["44"],
+    "url":"https://github.com/kaetowjj/Gnome-Extension-Energy-Rate-Indicator",
+    "version": 3
 }
