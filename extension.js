@@ -5,13 +5,13 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const Mainloop = imports.mainloop;
 
-let LabelState = St.Label({
+let refreshRate = 3000; // Refresh rate in milliseconds (3 second)
+let refreshTimerId = 0;
+let LabelState = new St.Label({
     text: "Power Rate: N/A",
     style_class: "power-rate-label", // Apply a CSS class
     y_expand: true, y_align: 2,
 });
-let refreshRate = 3000; // Refresh rate in milliseconds (3 second)
-let refreshTimerId = 0;
 let LabelBase = class {
     label = LabelState;
 }
