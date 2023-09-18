@@ -7,15 +7,9 @@ const Mainloop = imports.mainloop;
 
 let refreshRate = 3000; // Refresh rate in milliseconds (3 second)
 let refreshTimerId = 0;
-let LabelState = new St.Label({
-    text: "Power Rate: N/A",
-    style_class: "power-rate-label", // Apply a CSS class
-    y_expand: true, y_align: 2,
-});
-let LabelBase = class {
-    label = LabelState;
-}
 let DEFAULT_INSTANCE = null;
+
+
 
 function updatePowerRate() {
     try {
@@ -23,10 +17,10 @@ function updatePowerRate() {
         let [success, stdout] = GLib.spawn_command_line_sync("cat /sys/class/power_supply/BAT0/power_now");
         if (success) {
             let powerRate = parseFloat(stdout) / 1e6; // Convert µW to W
-            LabelState.text = `Power Rate: ${powerRate.toFixed(2)} W`;
+            DEFAULT_INSTANCE.text = `Power Rate: ${powerRate.toFixed(2)} W`;
         } else {
             logError("Failed to execute the command.");
-            LabelState.text = "Power Rate: N/A";
+            DEFAULT_INSTANCE.text = "Power Rate: N/A";
         }
     } catch (e) {
         logError(e);
@@ -42,12 +36,17 @@ function init() {
 
 
 function enable() {
-    if (DEFAULT_INSTANCE === null)
-        DEFAULT_INSTANCE = new LabelBase();
+    if (DEFAULT_INSTANCE === null){
+        DEFAULT_INSTANCE = new St.Label({
+            text: "Power Rate: N/A",
+            style_class: "power-rate-label", // Apply a CSS class
+            y_expand: true, y_align: 2,
+        });
+    }
 
     // Create a PanelMenu.Button with the label as its child
     let button = new PanelMenu.Button(null, "Power Rate Indicator");
-    button.actor.add_child(DEFAULT_INSTANCE.label);
+    button.actor.add_child(DEFAULT_INSTANCE);
 
     // Add the button to the top panel
     Main.panel.addToStatusArea("power-rate-indicator", button);
@@ -57,7 +56,8 @@ function enable() {
 }
 
 function disable() {
-    if (DEFAULT_INSTANCE instanceof LabelBase) {
+
+    if (DEFAULT_INSTANCE instanceof St.Label) {
         DEFAULT_INSTANCE = null;
     }
     // Remove the button from the top panel and stop the update loop
